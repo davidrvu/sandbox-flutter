@@ -7,6 +7,8 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/services.dart'; //SystemSound
+import 'package:audioplayers/audio_cache.Dart';
 
 void main() => runApp(MyApp());
 
@@ -49,7 +51,10 @@ class RandomWords extends StatefulWidget {
 
 class _RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
+  final _saved = Set<WordPair>(); // NEW
   final _biggerFont = TextStyle(fontSize: 18.0);
+
+  static AudioCache player = new AudioCache();
 
   Widget _buildSuggestions() {
     return ListView.builder(
@@ -66,6 +71,7 @@ class _RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildRow(WordPair pair) {
+    final alreadySaved = _saved.contains(pair);
     return ListTile(
       title: Text(
         pair.asPascalCase,
@@ -82,6 +88,22 @@ class _RandomWordsState extends State<RandomWords> {
           decorationStyle: TextDecorationStyle.wavy,
         ),
       ),
+      trailing: Icon(
+        alreadySaved ? Icons.favorite : Icons.favorite_border,
+        color: alreadySaved ? Colors.green : null,
+      ),
+      onTap: () {
+        setState(() {
+          if (alreadySaved) {
+            player.play("r2d2_sad.mp3");
+            _saved.remove(pair);
+          } else {
+            SystemSound.play(SystemSoundType.click);
+            player.play("r2d2_beep.mp3");
+            _saved.add(pair);
+          }
+        });
+      },
     );
   }
 
