@@ -8,7 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart'; //SystemSound
-import 'package:audioplayers/audio_cache.Dart';
+import 'package:audioplayers/audio_cache.Dart'; // FUENTE: https://www.it-swarm.dev/es/dart/como-reproducir-un-sonido-personalizado-en-flutter/832649250/
+//import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart';
+//import 'package:clounce_loading_screen/loading_screen.dart';
+import 'dart:async'; //Timer
+import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter/animation.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,7 +32,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.lightGreen,
       ),
       debugShowCheckedModeBanner: false, // DAVIDRVU: Para sacar DEBUG BANNER!
-      home: RandomWords(),
+      //home: RandomWords(), // ORIGINAL
+      home: SplashScreen(),
+
       //home: Scaffold(
       //  appBar: AppBar(
       //    title: Text("Bienvenido a Flutter " + dateNow.toString()),
@@ -37,6 +45,62 @@ class MyApp extends StatelessWidget {
       //    child: RandomWords(),
       //  ),
       //),
+    );
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////
+// LOADING SCREEN (SPLASH)
+//////////////////////////////////////////////////////////////////////////
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
+  AnimationController controller;
+  Animation<double> animation;
+
+  @override
+  void initState() {
+    super.initState();
+    /////////// ANIMATION INI: FUENTE: https://medium.com/@money.prise/fade-animation-in-flutter-9f421ca24398
+    controller =
+        AnimationController(duration: const Duration(seconds: 5), vsync: this);
+    animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
+
+    controller.forward();
+    ///////////
+    Timer(
+        Duration(seconds: 7),
+        () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => RandomWords())));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.green,
+      body: Center(
+        //child: Image.asset('assets/wolf.png'),
+
+        //child: FadeInImage.memoryNetwork(
+        //  placeholder: kTransparentImage,
+        //  //fadeInDuration: Duration(milliseconds: 100),
+        //  //fadeOutDuration: new Duration(milliseconds: 1500),
+        //  image: 'assets/wolf.png',
+        //),
+
+        child: FadeTransition(
+          opacity: animation,
+          //child: Image.asset('assets/wolf.png'),
+          child: Image.asset(
+            'assets/dog_loading.gif',
+            gaplessPlayback: true,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -55,6 +119,36 @@ class _RandomWordsState extends State<RandomWords> {
   final _biggerFont = TextStyle(fontSize: 18.0);
 
   static AudioCache player = new AudioCache();
+
+  void _pushSaved() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          final tiles = _saved.map(
+            (WordPair pair) {
+              return ListTile(
+                title: Text(
+                  pair.asPascalCase,
+                  style: _biggerFont,
+                ),
+              );
+            },
+          );
+          final divided = ListTile.divideTiles(
+            context: context,
+            tiles: tiles,
+          ).toList();
+
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Saved Suggestions'),
+            ),
+            body: ListView(children: divided),
+          );
+        },
+      ),
+    );
+  }
 
   Widget _buildSuggestions() {
     return ListView.builder(
@@ -115,7 +209,10 @@ class _RandomWordsState extends State<RandomWords> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Startup Name Generator | ' + dateNow),
+        title: Text('Startup Name Gen | ' + dateNow),
+        actions: [
+          IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
+        ],
       ),
       body: _buildSuggestions(),
     );
