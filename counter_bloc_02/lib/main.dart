@@ -8,22 +8,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // En caso de crear package
 //import 'package:counter_bloc_02/counter_bloc_02.dart'
 
-enum CounterEvent { increment, decrement }
+enum CounterEvent { increment, decrement, multiplicacion, division }
 
 //                             input,        output
-class CounterBloc extends Bloc<CounterEvent, int> {
+class CounterBloc extends Bloc<CounterEvent, double> {
   @override
-  int get initialState => 0;
+  double get initialState => 0;
 
   @override
   // output,                               input
-  Stream<int> mapEventToState(CounterEvent event) async* {
+  Stream<double> mapEventToState(CounterEvent event) async* {
     switch (event) {
       case CounterEvent.increment:
         yield state + 1;
         break;
       case CounterEvent.decrement:
         yield state - 1;
+        break;
+      case CounterEvent.multiplicacion:
+        yield state * 2;
+        break;
+      case CounterEvent.division:
+        yield state / 1000.0;
         break;
     }
   }
@@ -60,7 +66,7 @@ class CounterPage extends StatelessWidget {
       appBar: AppBar(title: const Text("Counter with Bloc - DRVU 2020")),
       body: Center(
         //                 MyBloc,      MyState
-        child: BlocBuilder<CounterBloc, int>(
+        child: BlocBuilder<CounterBloc, double>(
           builder: (context, state) {
             // Return a widget based on MyState
             return Text("You have pushed the button $state times.",
@@ -85,6 +91,21 @@ class CounterPage extends StatelessWidget {
             child: FloatingActionButton(
               child: Icon(Icons.remove),
               onPressed: () => counterBlocExamp.add(CounterEvent.decrement),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: FloatingActionButton(
+              child: Icon(Icons.airplanemode_active),
+              onPressed: () =>
+                  counterBlocExamp.add(CounterEvent.multiplicacion),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: FloatingActionButton(
+              child: Icon(Icons.sentiment_satisfied),
+              onPressed: () => counterBlocExamp.add(CounterEvent.division),
             ),
           ),
         ],
