@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     amplifyInstance.addPlugin(analyticsPlugins: [analyticsPlugin]);
 
     // Once Plugins are added, configure Amplify
-    await amplifyInstance.configure(amplifyconfig);
+    //await amplifyInstance.configure(amplifyconfig);
     try {
       setState(() {
         _amplifyConfigured = true;
@@ -84,6 +84,41 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       print(e);
     }
+
+    /////////////////////////////////////////////////////////////////////////
+    /// FUENTE: https://docs.amplify.aws/lib/auth/signin/q/platform/flutter#prerequisites
+    /////////////////////////////////////////////////////////////////////////
+    var isSignUpComplete;
+    try {
+      Map<String, dynamic> userAttributes = {
+        "email": "appmopit@gmail.com",
+        //"phone_number": phoneController.text,
+        // additional attributes as needed
+      };
+      SignUpResult res = await Amplify.Auth.signUp(
+          username: "myusernametest",
+          password: "mysupersecurepassword",
+          options: CognitoSignUpOptions(userAttributes: userAttributes));
+      setState(() {
+        isSignUpComplete = res.isSignUpComplete;
+      });
+    } on AuthError catch (e) {
+      print(e);
+    }
+
+    print("Nombre de usuario, contraseña y email ingresados!");
+
+    try {
+      SignUpResult res = await Amplify.Auth.confirmSignUp(
+          username: "myusernametest", confirmationCode: "123456");
+      setState(() {
+        isSignUpComplete = res.isSignUpComplete;
+      });
+    } on AuthError catch (e) {
+      print(e);
+    }
+    print("----Confirm signUp succeeded ??");
+    // Confirm signUp succeeded
   }
 
   int _counter = 0;

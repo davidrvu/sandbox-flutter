@@ -6,6 +6,8 @@
 # >flutter pub get
 # >amplify init   (It is recommended to run this command from the root of your app directory)
 
+# FUENTE: https://docs.amplify.aws/lib/auth/getting-started/q/platform/flutter#configure-auth-category
+
 name: amplify_app_03
 description: A new Flutter project.
 
