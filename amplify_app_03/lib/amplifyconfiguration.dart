@@ -12,35 +12,21 @@ const amplifyconfig = ''' {
                 "CredentialsProvider": {
                     "CognitoIdentity": {
                         "Default": {
-                            "PoolId": "us-east-1:0dda32c1-4fc6-438e-8f2f-d4d0fd299995",
+                            "PoolId": "us-east-1:5519b026-e880-471b-b723-72b38177430f",
                             "Region": "us-east-1"
                         }
                     }
                 },
                 "CognitoUserPool": {
                     "Default": {
-                        "PoolId": "us-east-1_rVMTQ9kxG",
-                        "AppClientId": "496rtaoq24hnkaqtkj9vvatedc",
-                        "AppClientSecret": "1tmtko002l189qe7b2011sls057mpcejom93p2h7o9jfp27rh5sk",
+                        "PoolId": "us-east-1_DRTakJlMD",
+                        "AppClientId": "2og6g5ob7nhi0r47e3vm3rbpjd",
+                        "AppClientSecret": "594f6ck6kqu3t16ld8vkc1j9dai57vtbshb4r89ic9m6nmmp2mc",
                         "Region": "us-east-1"
                     }
                 },
                 "Auth": {
                     "Default": {
-                        "OAuth": {
-                            "WebDomain": "amplifyapp036f2f6803-6f2f6803-dev.auth.us-east-1.amazoncognito.com",
-                            "AppClientId": "496rtaoq24hnkaqtkj9vvatedc",
-                            "AppClientSecret": "1tmtko002l189qe7b2011sls057mpcejom93p2h7o9jfp27rh5sk",
-                            "SignInRedirectURI": "myapp://callback/",
-                            "SignOutRedirectURI": "myapp://signout/",
-                            "Scopes": [
-                                "phone",
-                                "email",
-                                "openid",
-                                "profile",
-                                "aws.cognito.signin.user.admin"
-                            ]
-                        },
                         "authenticationFlowType": "USER_SRP_AUTH"
                     }
                 }

@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "amplifyapp036f2f6803_identitypool_6f2f6803",
+    "identityPoolName": "amplifyapp037c421899_identitypool_7c421899",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "amplif6f2f6803",
-    "userPoolName": "amplifyapp036f2f6803_userpool_6f2f6803",
+    "resourceNameTruncated": "amplif7c421899",
+    "userPoolName": "amplifyapp037c421899_userpool_7c421899",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "amplif6f2f6803_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "amplif7c421899_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "6f2f6803",
-    "resourceName": "amplifyapp036f2f6803",
+    "sharedId": "7c421899",
+    "resourceName": "amplifyapp037c421899",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,7 +46,6 @@
         ]
     },
     "useDefault": "default",
-    "hostedUI": true,
     "userPoolGroupList": [],
     "dependsOn": []
 }
