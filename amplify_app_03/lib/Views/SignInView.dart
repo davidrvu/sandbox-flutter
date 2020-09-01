@@ -46,6 +46,7 @@ class _SignInViewState extends State<SignInView> {
     }
 
     try {
+      //TODO: Recuperar otros parámetros del usuario!! (guardados en COGNITO (CELULAR, EMAIL, ETC))
       String currentUsername = usernameController.text.trim();
       String currentPassword = passwordController.text.trim();
       SignInResult res = await Amplify.Auth.signIn(
