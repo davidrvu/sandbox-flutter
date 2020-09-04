@@ -46,11 +46,17 @@ class _SignInViewState extends State<SignInView> {
     }
 
     try {
-      //TODO: Recuperar otros parámetros del usuario!! (guardados en COGNITO (CELULAR, EMAIL, ETC))
+      // TODO: Recuperar otros parámetros del usuario!! (guardados en COGNITO (CELULAR, EMAIL, ETC))
+      // AÚN NO IMPLEMENTADO! FUENTE: https://docs.amplify.aws/lib/auth/user-attributes/q/platform/flutter#fetch-the-current-users-attributes
       String currentUsername = usernameController.text.trim();
       String currentPassword = passwordController.text.trim();
       SignInResult res = await Amplify.Auth.signIn(
           username: currentUsername, password: currentPassword);
+
+      print(res);
+      print(res.hashCode);
+      print(res.isSignedIn);
+      print(res.nextStep);
       print("USERNAME = " + currentUsername);
       Navigator.pop(context, [true, currentUsername]);
     } on AuthError catch (e) {

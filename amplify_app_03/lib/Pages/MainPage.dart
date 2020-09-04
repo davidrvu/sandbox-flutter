@@ -20,6 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:amplify_app_03/Views/ImageLineItem.dart';
 import 'package:amplify_app_03/Views/ImageUploader.dart';
 import 'package:amplify_app_03/Views/UserView.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:location_permissions/location_permissions.dart';
 
 class MainPage extends StatefulWidget {
   final String currentUsername;
@@ -41,6 +43,33 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     _loadImages();
+    //getPosition();
+  }
+
+  //String altitudVar;
+  String altitudVar = "test";
+
+  void getPosition() async {
+    try {
+      //bool isLocationServiceEnabled;
+      //isLocationServiceEnabled = await isLocationServiceEnabled();
+      PermissionStatus permission =
+          await LocationPermissions().requestPermissions();
+      LocationPermission permission1 = await requestPermission();
+      LocationPermission permission2 = await checkPermission();
+      print("permission1 = " + permission1.toString());
+      print("permission2 = " + permission2.toString());
+
+      Position positionNow =
+          await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      altitudVar = positionNow.altitude.toString();
+      print("Altitud  = " + positionNow.altitude.toString());
+      print("Latitud  = " + positionNow.latitude.toString());
+      print("Longitud = " + positionNow.longitude.toString());
+    } catch (e) {
+      print("ERROR de getCurrentPosition = " + e.toString());
+      altitudVar = "";
+    }
   }
 
   void _loadImages() async {
@@ -92,22 +121,31 @@ class _MainPageState extends State<MainPage> {
           title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [Text("Main Page !!"), UserView()])),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            child: Text(
-              "Bienvenido: " + currentUsername,
-              style: TextStyle(fontSize: 24),
+      body: Center(
+        child: Column(
+          //mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              child: Text(
+                "Bienvenido: " + currentUsername,
+                style: TextStyle(fontSize: 24),
+              ),
             ),
-          ),
-          Container(
-            child: Text(
-              dateTimeNow,
-              style: TextStyle(fontSize: 24),
+            Container(
+              child: Text(
+                dateTimeNow,
+                style: TextStyle(fontSize: 24),
+              ),
             ),
-          ),
-        ],
+            Container(
+              child: Text(
+                "Altitud = " + altitudVar,
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
