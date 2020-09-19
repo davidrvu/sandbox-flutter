@@ -1,6 +1,7 @@
 // FUENTE: https://github.com/aws-amplify/amplify-flutter/blob/master/example/lib/main.dart
 // FUENTE: https://docs.amplify.aws/lib/project-setup/create-application/q/platform/flutter#n4-initialize-amplify-in-the-application
 // FUENTE: https://docs.amplify.aws/lib/auth/signin/q/platform/flutter#prerequisites
+// PARA VER ESTADÍSTICAS: >amplify console analytics
 
 import 'dart:convert';
 import 'dart:io';
@@ -8,7 +9,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 // Amplify Flutter Packages
 import 'package:amplify_core/amplify_core.dart';
-//import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 // Generated in previous step
@@ -39,12 +40,12 @@ class _MyAppState extends State<MyApp> {
   void _initAmplifyFlutter() async {
     AmplifyAuthCognito auth = AmplifyAuthCognito();
     //AmplifyStorageS3 storage = AmplifyStorageS3();
-    //AmplifyAnalyticsPinpoint analytics = AmplifyAnalyticsPinpoint();
+    AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
 
     amplify.addPlugin(
       authPlugins: [auth],
       //storagePlugins: [storage],
-      //analyticsPlugins: [analytics]
+      analyticsPlugins: [analyticsPlugin],
     );
 
     // Initialize AmplifyFlutter

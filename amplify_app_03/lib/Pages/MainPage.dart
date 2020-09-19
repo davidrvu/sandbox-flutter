@@ -16,6 +16,7 @@
 import 'package:intl/intl.dart'; // DateFormat
 import 'package:amplify_core/amplify_core.dart';
 //import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_app_03/Views/ImageLineItem.dart';
 import 'package:amplify_app_03/Views/ImageUploader.dart';
@@ -108,6 +109,22 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+  void _createEventPinpoint() {
+    // FUENTE https://medium.com/@vennify.education/flutter-apps-with-aws-backend-part-3-analytics-bdb8b5bad5c0
+    // simply logs a test event
+    AnalyticsEvent event = AnalyticsEvent("test_event");
+
+    event.properties.addBoolProperty("boolKey", true);
+    event.properties.addDoubleProperty("doubleKey", 10.0);
+    event.properties.addIntProperty("intKey", 10);
+    event.properties.addStringProperty("stringKey", "stringValue");
+
+    Amplify.Analytics.recordEvent(event: event);
+    Amplify.Analytics.flushEvents();
+
+    print("event logged");
+  }
+
   @override
   Widget build(BuildContext context) {
     print("Bienvenido: " + currentUsername);
@@ -142,6 +159,12 @@ class _MainPageState extends State<MainPage> {
               child: Text(
                 "Altitud = " + altitudVar,
                 style: TextStyle(fontSize: 24),
+              ),
+            ),
+            Container(
+              child: RaisedButton(
+                onPressed: _createEventPinpoint,
+                child: Text("Create Event Pinpoint"),
               ),
             ),
           ],
