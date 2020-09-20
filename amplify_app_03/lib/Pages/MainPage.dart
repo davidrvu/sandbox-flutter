@@ -20,6 +20,7 @@ import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_app_03/Views/ImageLineItem.dart';
 import 'package:amplify_app_03/Views/ImageUploader.dart';
+import 'package:amplify_app_03/Views/ChangePswView.dart';
 import 'package:amplify_app_03/Views/UserView.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location_permissions/location_permissions.dart';
@@ -39,6 +40,36 @@ class _MainPageState extends State<MainPage> {
 
   final String currentUsername;
   _MainPageState({Key key, @required this.currentUsername});
+
+  Future<Null> _showDialogForResult(
+      String text, Function onSuccess, Widget dialogWidget) async {
+    List result = await showDialog(
+      context: context,
+      child: new SimpleDialog(
+        title: Text(text),
+        children: [
+          dialogWidget,
+          RaisedButton(
+            child: Text("Cancel"),
+            onPressed: () {
+              Navigator.pop(context, [false, ""]);
+            },
+          ),
+        ],
+      ),
+    );
+    if (result[0]) onSuccess(result[1]);
+  }
+
+  // dialogWidget must return true or false
+  Widget openDialogButton(
+      String text, Function onSuccess, Widget dialogWidget) {
+    return RaisedButton(
+        child: Text(text),
+        onPressed: () {
+          _showDialogForResult(text, onSuccess, dialogWidget);
+        });
+  }
 
   @override
   void initState() {
@@ -160,6 +191,12 @@ class _MainPageState extends State<MainPage> {
                 "Altitud = " + altitudVar,
                 style: TextStyle(fontSize: 24),
               ),
+            ),
+            Container(
+              child: openDialogButton(
+                  "Change Password",
+                  (oldPassword) => {print("Update password success!")},
+                  ChangePswView()),
             ),
             Container(
               child: RaisedButton(
