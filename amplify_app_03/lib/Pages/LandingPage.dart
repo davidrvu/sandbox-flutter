@@ -67,6 +67,16 @@ class _LandingPageState extends State<LandingPage> {
         (route) => false);
   }
 
+  void onSignUpSuccess(currentUsername) {
+    print("Sign In exitoso! :)");
+    print("USUARIO = " + currentUsername);
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MainPage(currentUsername: currentUsername)),
+        (route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,11 +88,12 @@ class _LandingPageState extends State<LandingPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             openDialogButton("Sign In", onSignInSuccess, SignInView()),
-            openDialogButton(
-                "Sign Up",
-                (userName) => {print("sign up success userName = " + userName)},
-                SignUpView())
-          ],
+            openDialogButton("Sign Up", onSignUpSuccess, SignUpView()),
+            //openDialogButton(
+            //    "Sign Up",
+            //    (userName) => {print("sign up success userName = " + userName)},
+            //    SignUpView())
+          ], //
         )));
   }
 }

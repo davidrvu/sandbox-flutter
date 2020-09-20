@@ -17,6 +17,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_app_03/Views/ErrorView.dart';
+import 'package:amplify_app_03/Pages/MainPage.dart';
 
 class SignUpView extends StatefulWidget {
   @override
@@ -34,6 +35,9 @@ class _SignUpViewState extends State<SignUpView> {
   List<String> _signUpExceptions = [];
   bool _isSignedUp = false;
 
+  String currentUsername;
+  String currentPassword;
+
   @override
   void initState() {
     super.initState();
@@ -50,9 +54,14 @@ class _SignUpViewState extends State<SignUpView> {
       "phone_number": phoneController.text,
     };
     try {
+      currentUsername = usernameController.text.trim();
+      currentPassword = passwordController.text.trim();
+      print("currentUsername = " + currentUsername);
+      print("currentPassword = " + currentPassword);
+
       SignUpResult res = await Amplify.Auth.signUp(
-          username: usernameController.text.trim(),
-          password: passwordController.text.trim(),
+          username: currentUsername,
+          password: currentPassword,
           options: CognitoSignUpOptions(userAttributes: userAttributes));
 
       setState(() {
@@ -74,6 +83,19 @@ class _SignUpViewState extends State<SignUpView> {
       SignUpResult res = await Amplify.Auth.confirmSignUp(
           username: currentUsername,
           confirmationCode: confirmationCodeController.text.trim());
+      //Navigator.pop(context, [true, currentUsername]);
+      print("SingUp confirmado!");
+      // Después del SignUp -> un SignIn automático
+      print("Despues del SignUp -> SignIn auto");
+      try {
+        await Amplify.Auth.signOut();
+      } on AuthError catch (e) {
+        print(e);
+      }
+      print("SignIn user = " + currentUsername);
+      SignInResult res_sign_in = await Amplify.Auth.signIn(
+          username: currentUsername, password: currentPassword);
+      print("USERNAME = " + currentUsername);
       Navigator.pop(context, [true, currentUsername]);
     } on AuthError catch (error) {
       _setError(error);
